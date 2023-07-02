@@ -49,7 +49,8 @@
         "SDK/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates",
         "SDK/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_msp_template.c",
         "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_conf_template.c",
-        "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c"
+        "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c",
+        "USER/KeycodeReport/KeycodeReport.cpp"
       ],
       "toolchain": "GCC",
       "compileConfig": {
@@ -63,19 +64,26 @@
         },
         "options": "null"
       },
-      "uploader": "JLink",
+      "uploader": "OpenOCD",
       "uploadConfig": {
         "bin": "",
-        "baseAddr": "",
-        "cpuInfo": {
-          "vendor": "null",
-          "cpuName": "null"
-        },
-        "proType": 1,
-        "speed": 8000,
-        "otherCmds": ""
+        "target": "stm32f1x",
+        "interface": "cmsis-dap-v1",
+        "baseAddr": "0x08000000"
       },
-      "uploadConfigMap": {},
+      "uploadConfigMap": {
+        "JLink": {
+          "bin": "",
+          "baseAddr": "",
+          "cpuInfo": {
+            "vendor": "null",
+            "cpuName": "null"
+          },
+          "proType": 1,
+          "speed": 8000,
+          "otherCmds": ""
+        }
+      },
       "custom_dep": {
         "name": "default",
         "incList": [
@@ -88,7 +96,9 @@
           "SDK/USB_DEVICE/App",
           "SDK/USB_DEVICE/Target",
           "SDK/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc",
-          "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Inc"
+          "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
+          "USER",
+          "USER/KeycodeReport"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",
