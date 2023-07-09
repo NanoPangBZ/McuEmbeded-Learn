@@ -130,6 +130,13 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
+  .function_table :
+  {
+    PROVIDE_HIDDEN (__function_table_starts = .);
+    KEEP (*(.function_table*))
+    PROVIDE_HIDDEN (__function_table_starts = .);
+  } >FLASH
+
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 

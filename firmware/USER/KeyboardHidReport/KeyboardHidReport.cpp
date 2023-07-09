@@ -1,6 +1,6 @@
-#include "KeycodeHidReport.h"
+#include "KeyboardHidReport.h"
 
-void KeycodeHidReport::hidReportPress( KeyCode_t keycode )
+void KeyboardHidReport::hidReportPress( KeyCode_t keycode )
 {
     int index, bitIndex;
 
@@ -18,7 +18,7 @@ void KeycodeHidReport::hidReportPress( KeyCode_t keycode )
 }
 
 
-void KeycodeHidReport::hidReportRelease( KeyCode_t keycode)
+void KeyboardHidReport::hidReportRelease( KeyCode_t keycode)
 {
     int index, bitIndex;
 
@@ -35,7 +35,7 @@ void KeycodeHidReport::hidReportRelease( KeyCode_t keycode)
     _hidReportBuffer[index + 1] &= ~(1 << bitIndex);
 }
 
-bool KeycodeHidReport::hidReportIsPress( KeyCode_t keycode )
+bool KeyboardHidReport::hidReportIsPress( KeyCode_t keycode )
 {
     int index, bitIndex;
 
@@ -52,13 +52,13 @@ bool KeycodeHidReport::hidReportIsPress( KeyCode_t keycode )
     return _hidReportBuffer[index + 1] & (1 << bitIndex);
 }
 
-void KeycodeHidReport::hidReportReset()
+void KeyboardHidReport::hidReportReset()
 {
     _hidReportBuffer[0] = 1;
     memset( _hidReportBuffer + 1 , 0 , 16 );
 }
 
-uint8_t* KeycodeHidReport::getReportBuffer( uint16_t* size )
+uint8_t* KeyboardHidReport::getReportBuffer( uint16_t* size )
 {
     *size = 17;
     return _hidReportBuffer;

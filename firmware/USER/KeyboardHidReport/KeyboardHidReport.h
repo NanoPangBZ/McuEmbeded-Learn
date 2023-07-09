@@ -32,9 +32,9 @@ enum KeyCode_t : int16_t
     /*------------------------- HID report data -------------------------*/
 };
 
-class KeycodeHidReport{
+class KeyboardHidReport{
 public:
-    explicit KeycodeHidReport()
+    explicit KeyboardHidReport()
     {
         hidReportReset();
     };

@@ -10,7 +10,17 @@
   "virtualFolder": {
     "name": "<virtual_root>",
     "files": [],
-    "folders": []
+    "folders": [
+      {
+        "name": "link_script",
+        "files": [
+          {
+            "path": "SDK/STM32F103ZETx_FLASH.ld"
+          }
+        ],
+        "folders": []
+      }
+    ]
   },
   "outDir": "build",
   "deviceName": null,
@@ -50,7 +60,8 @@
         "SDK/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_msp_template.c",
         "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_conf_template.c",
         "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c",
-        "USER/KeycodeReport/KeycodeReport.cpp"
+        "USER/KeycodeReport/KeycodeReport.cpp",
+        "USER/easylogger/plugins"
       ],
       "toolchain": "GCC",
       "compileConfig": {
@@ -98,7 +109,9 @@
           "SDK/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc",
           "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
           "USER",
-          "USER/KeycodeReport"
+          "USER/Keyboard",
+          "USER/easylogger/inc",
+          "USER/KeyboardHidReport"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",
@@ -114,7 +127,8 @@
         "sourceDirList": [],
         "defineList": [
           "USE_HAL_DRIVER",
-          "STM32F103xE"
+          "STM32F103xE",
+          "ARM_MATH_CM4"
         ]
       }
     }
