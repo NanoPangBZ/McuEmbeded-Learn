@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include "stm32f1xx_hal.h"
 #include "usart.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 /**
  * EasyLogger port initialize
@@ -98,7 +100,13 @@ void elog_port_output_unlock(void) {
  */
 char time_stamp_string[13];
 const char *elog_port_get_time(void) {
-    sprintf( time_stamp_string , "%08ld" , HAL_GetTick() );
+    if( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+        sprintf( time_stamp_string , "%08ld" , xTaskGetTickCount() );
+    }else
+    {
+        sprintf( time_stamp_string , "%s" , "none time" );
+    }
     return time_stamp_string;
 }
 

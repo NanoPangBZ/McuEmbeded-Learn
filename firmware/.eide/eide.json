@@ -5,7 +5,8 @@
   "srcDirs": [
     ".eide/deps",
     "SDK",
-    "USER"
+    "USER",
+    "OS"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",
@@ -61,7 +62,12 @@
         "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_conf_template.c",
         "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c",
         "USER/KeycodeReport/KeycodeReport.cpp",
-        "USER/easylogger/plugins"
+        "USER/easylogger/plugins",
+        "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_1.c",
+        "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_2.c",
+        "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_3.c",
+        "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_5.c",
+        "USER/user_main.c"
       ],
       "toolchain": "GCC",
       "compileConfig": {
@@ -111,7 +117,9 @@
           "USER",
           "USER/Keyboard",
           "USER/easylogger/inc",
-          "USER/KeyboardHidReport"
+          "USER/KeyboardHidReport",
+          "OS/include",
+          "OS/portable"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",

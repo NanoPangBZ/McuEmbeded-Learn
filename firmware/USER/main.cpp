@@ -1,41 +1,37 @@
-#include "stm32f1xx.h"
-#include "usbd_custom_hid_if.h"
-
-#include "keyboardHidReport.h"
-#include "Keyboard.h"
-
+﻿#include "stm32f1xx.h"
 #include "elog.h"
-#include "usart.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
-#include "function_section.h"
 
-extern USBD_HandleTypeDef hUsbDeviceFS;
-static KeyboardHidReport keyboardHidReport;
+void test_task( void* param )
+{
+    while(1)
+    {
+        elog_i( "task" , " test task ");
+        elog_flush();
+        vTaskDelay( 1000 / portTICK_PERIOD_MS );
+    }
+}
 
 extern "C" int user_main()
 {
-    uint16_t keycodeHidReportSize = 0;
-
     elog_init();
     elog_start();
 
-    elog_i( "main" , "set up" );
-    elog_flush();
+    TaskHandle_t a;
+    xTaskCreate(
+        test_task , 
+        "test",
+        1024,
+        NULL,
+        1 , 
+        &a
+    );
 
-    while(1)
-    {
-        keyboardHidReport.hidReportPress( H );
-        USBD_CUSTOM_HID_SendReport( &hUsbDeviceFS , keyboardHidReport.getReportBuffer( &keycodeHidReportSize ) ,  keycodeHidReportSize );
-        HAL_Delay( 50 );
-        keyboardHidReport.hidReportRelease( H );
-        keyboardHidReport.hidReportPress( L );
-        USBD_CUSTOM_HID_SendReport( &hUsbDeviceFS , keyboardHidReport.getReportBuffer( &keycodeHidReportSize ) ,  keycodeHidReportSize );
-        HAL_Delay( 50 );
-        keyboardHidReport.hidReportReset();
-        USBD_CUSTOM_HID_SendReport( &hUsbDeviceFS , keyboardHidReport.getReportBuffer( &keycodeHidReportSize ) ,  keycodeHidReportSize );
-        HAL_Delay( 1000 );
-    }
-    return -1;
+    vTaskStartScheduler();
+
+    while(1);
+
+    return 0;
 }
-
-DECLARE_FUNCTION_INFO(  user_main , NULL )
