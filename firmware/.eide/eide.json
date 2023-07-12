@@ -119,7 +119,8 @@
           "USER/easylogger/inc",
           "USER/KeyboardHidReport",
           "OS/include",
-          "OS/portable"
+          "OS/portable",
+          "USER/device/spi_flash"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",

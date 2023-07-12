@@ -605,18 +605,7 @@ void elog_output(uint8_t level, const char *tag, const char *file, const char *f
     if (get_fmt_enabled(level, ELOG_FMT_LVL)) {
         log_len += elog_strcpy(log_len, log_buf + log_len, level_output_info[level]);
     }
-    /* package tag info */
-    if (get_fmt_enabled(level, ELOG_FMT_TAG)) {
-        log_len += elog_strcpy(log_len, log_buf + log_len, "[");
-        log_len += elog_strcpy(log_len, log_buf + log_len, tag);
-        log_len += elog_strcpy(log_len, log_buf + log_len, "]");
-        /* if the tag length is less than 50% ELOG_FILTER_TAG_MAX_LEN, then fill space */
-        if (tag_len <= ELOG_FILTER_TAG_MAX_LEN / 2) {
-            memset(tag_sapce, ' ', ELOG_FILTER_TAG_MAX_LEN / 2 - tag_len);
-            log_len += elog_strcpy(log_len, log_buf + log_len, tag_sapce);
-        }
-        log_len += elog_strcpy(log_len, log_buf + log_len, " ");
-    }
+
     /* package time, process and thread info */
     if (get_fmt_enabled(level, ELOG_FMT_P_INFO | ELOG_FMT_T_INFO | ELOG_FMT_FUNC )) {
         log_len += elog_strcpy(log_len, log_buf + log_len, "[");
@@ -636,7 +625,7 @@ void elog_output(uint8_t level, const char *tag, const char *file, const char *f
             }
         }
         /* 打包函数名 */
-        if (get_fmt_enabled(level, ELOG_FMT_T_INFO)) {
+        if (get_fmt_enabled(level, ELOG_FMT_FUNC)) {
             log_len += elog_strcpy(log_len, log_buf + log_len, func );
         }
         log_len += elog_strcpy(log_len, log_buf + log_len, "] ");
@@ -658,8 +647,20 @@ void elog_output(uint8_t level, const char *tag, const char *file, const char *f
         }
         log_len += elog_strcpy(log_len, log_buf + log_len, ") ");
     }
+    /* package tag info */
+    if (get_fmt_enabled(level, ELOG_FMT_TAG)) {
+        log_len += elog_strcpy(log_len, log_buf + log_len, "[");
+        log_len += elog_strcpy(log_len, log_buf + log_len, tag);
+        log_len += elog_strcpy(log_len, log_buf + log_len, "]");
+        /* if the tag length is less than 50% ELOG_FILTER_TAG_MAX_LEN, then fill space */
+        if (tag_len <= ELOG_FILTER_TAG_MAX_LEN / 2) {
+            memset(tag_sapce, ' ', ELOG_FILTER_TAG_MAX_LEN / 2 - tag_len);
+            log_len += elog_strcpy(log_len, log_buf + log_len, tag_sapce);
+        }
+        log_len += elog_strcpy(log_len, log_buf + log_len, " ");
+    }
     /* package other log data to buffer. '\0' must be added in the end by vsnprintf. */
-    log_len += elog_strcpy(log_len, log_buf + log_len, ">> ");
+    log_len += elog_strcpy(log_len, log_buf + log_len, "->>");
     fmt_result = vsnprintf(log_buf + log_len, ELOG_LINE_BUF_SIZE - log_len, format, args);
 
     va_end(args);

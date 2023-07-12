@@ -44,7 +44,7 @@ ElogErrCode elog_port_init(void) {
 
     for( uint8_t temp = 0 ;temp < 5 ; temp++ )
     {
-        elog_set_fmt( temp , ELOG_FMT_LVL | ELOG_FMT_TAG | ELOG_FMT_TIME);
+        elog_set_fmt( temp , ELOG_FMT_LVL | ELOG_FMT_TAG | ELOG_FMT_TIME | ELOG_FMT_T_INFO);
     }
 
     /* add your code here */
@@ -67,11 +67,11 @@ void elog_port_deinit(void) {
  * @param log output of log
  * @param size log size
  */
+static uint8_t usart1_dma_buff[256];
 void elog_port_output(const char *log, size_t size)
 {
-    static uint8_t usart1_dma_buff[64];
     while( HAL_UART_GetState( &huart1 ) != HAL_UART_STATE_READY );
-    memcpy( usart1_dma_buff , log , 64 );
+    memcpy( usart1_dma_buff , log , size );
     while( HAL_UART_Transmit_DMA( &huart1 , usart1_dma_buff , size ) == HAL_BUSY );
 }
 
@@ -105,7 +105,7 @@ const char *elog_port_get_time(void) {
         sprintf( time_stamp_string , "%08ld" , xTaskGetTickCount() );
     }else
     {
-        sprintf( time_stamp_string , "%s" , "none time" );
+        sprintf( time_stamp_string , "%s" , "NoneTime" );
     }
     return time_stamp_string;
 }
@@ -130,9 +130,9 @@ const char *elog_port_get_p_info(void) {
 const char *elog_port_get_t_info(void) {
     
     /* add your code here */
-    // if( taskSCHEDULER_RUNNING == xTaskGetSchedulerState() )
-    //     return pcTaskGetName( NULL );
-    // else
-    //     return "bare";
+    if( taskSCHEDULER_RUNNING == xTaskGetSchedulerState() )
+        return pcTaskGetName( NULL );
+    else
+        return "bare";
     return NULL;
 }
