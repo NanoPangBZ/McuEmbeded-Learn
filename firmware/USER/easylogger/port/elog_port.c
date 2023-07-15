@@ -29,10 +29,9 @@
 #include <elog.h>
 #include <string.h>
 #include <stdio.h>
-#include "stm32f1xx_hal.h"
-#include "usart.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "bsp.h"
 
 /**
  * EasyLogger port initialize
@@ -67,12 +66,9 @@ void elog_port_deinit(void) {
  * @param log output of log
  * @param size log size
  */
-static uint8_t usart1_dma_buff[256];
 void elog_port_output(const char *log, size_t size)
 {
-    while( HAL_UART_GetState( &huart1 ) != HAL_UART_STATE_READY );
-    memcpy( usart1_dma_buff , log , size );
-    while( HAL_UART_Transmit_DMA( &huart1 , usart1_dma_buff , size ) == HAL_BUSY );
+    usart_send( (uint8_t*)log , size );
 }
 
 /**
@@ -133,6 +129,6 @@ const char *elog_port_get_t_info(void) {
     if( taskSCHEDULER_RUNNING == xTaskGetSchedulerState() )
         return pcTaskGetName( NULL );
     else
-        return "bare";
+        return "noOS";
     return NULL;
 }

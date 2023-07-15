@@ -660,7 +660,7 @@ void elog_output(uint8_t level, const char *tag, const char *file, const char *f
         log_len += elog_strcpy(log_len, log_buf + log_len, " ");
     }
     /* package other log data to buffer. '\0' must be added in the end by vsnprintf. */
-    log_len += elog_strcpy(log_len, log_buf + log_len, "->>");
+    log_len += elog_strcpy(log_len, log_buf + log_len, "->> ");
     fmt_result = vsnprintf(log_buf + log_len, ELOG_LINE_BUF_SIZE - log_len, format, args);
 
     va_end(args);

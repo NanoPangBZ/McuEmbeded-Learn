@@ -5,8 +5,7 @@
   "srcDirs": [
     ".eide/deps",
     "SDK",
-    "USER",
-    "OS"
+    "USER"
   ],
   "virtualFolder": {
     "name": "<virtual_root>",
@@ -16,7 +15,7 @@
         "name": "link_script",
         "files": [
           {
-            "path": "SDK/STM32F103ZETx_FLASH.ld"
+            "path": "SDK/stm32_hal/STM32F103ZETx_FLASH.ld"
           }
         ],
         "folders": []
@@ -67,13 +66,30 @@
         "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_2.c",
         "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_3.c",
         "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_5.c",
-        "USER/user_main.c"
+        "USER/user_main.c",
+        "USER/test.c",
+        "SDK/stm32_hal/Drivers/CMSIS/Core_A",
+        "SDK/stm32_hal/Drivers/CMSIS/docs",
+        "SDK/stm32_hal/Drivers/CMSIS/DSP",
+        "SDK/stm32_hal/Drivers/CMSIS/NN",
+        "SDK/stm32_hal/Drivers/CMSIS/RTOS",
+        "SDK/stm32_hal/Drivers/CMSIS/RTOS2",
+        "SDK/stm32_hal/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_msp_template.c",
+        "SDK/stm32_hal/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_timebase_rtc_alarm_template.c",
+        "SDK/stm32_hal/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_timebase_tim_template.c",
+        "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid_if_template.c",
+        "SDK/stm32_hal/Drivers/CMSIS/Lib/ARM",
+        "SDK/stm32_hal/Drivers/CMSIS/Lib/IAR",
+        "SDK/stm32_hal/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates",
+        "SDK/stm32_hal/Drivers/CMSIS/Core/Template",
+        "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_conf_template.c",
+        "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c"
       ],
       "toolchain": "GCC",
       "compileConfig": {
         "cpuType": "Cortex-M3",
         "floatingPointHardware": "none",
-        "scatterFilePath": "SDK\\STM32F103ZETx_FLASH.ld",
+        "scatterFilePath": "SDK\\stm32_hal\\STM32F103ZETx_FLASH.ld",
         "useCustomScatterFile": true,
         "storageLayout": {
           "RAM": [],
@@ -105,22 +121,23 @@
         "name": "default",
         "incList": [
           ".eide/deps",
-          "SDK/Core/Inc",
-          "SDK/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-          "SDK/Drivers/CMSIS/Include",
-          "SDK/Drivers/STM32F1xx_HAL_Driver/Inc",
-          "SDK/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
-          "SDK/USB_DEVICE/App",
-          "SDK/USB_DEVICE/Target",
-          "SDK/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc",
-          "SDK/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
           "USER",
           "USER/Keyboard",
           "USER/easylogger/inc",
           "USER/KeyboardHidReport",
-          "OS/include",
-          "OS/portable",
-          "USER/device/spi_flash"
+          "USER/device/spi_flash",
+          "USER/embed_shell",
+          "USER/bsp",
+          "SDK/freeRTOS/include",
+          "SDK/freeRTOS/portable",
+          "SDK/stm32_hal/Core/Inc",
+          "SDK/stm32_hal/Drivers/CMSIS/Core/Include",
+          "SDK/stm32_hal/Drivers/STM32F1xx_HAL_Driver/Inc",
+          "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc",
+          "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
+          "SDK/stm32_hal/USB_DEVICE/App",
+          "SDK/stm32_hal/USB_DEVICE/Target",
+          "SDK/stm32_hal/Drivers/CMSIS/Device/ST/STM32F1xx/Include"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",
