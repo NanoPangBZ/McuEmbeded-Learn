@@ -3,30 +3,38 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "function_section.h"
-#include "gpio.h"
+#include "bsp.h"
+#include "device.h"
+#include <string.h>
 
 void test_task( void* param )
 {
     elog_i( "prt" , "test task enter");
-    while(1)
-    {
-        elog_i( "test" , "test task send out");
-        elog_flush();
-        vTaskDelay( 1000 / portTICK_PERIOD_MS );
-    }
-    elog_i( "prt" , "test task enter");
+    w25qxx_test();
+    elog_i( "prt" , "test task exit");
+    vTaskDelete( NULL );
 }
+
 static void sys_tick_led_task( void* param )
 {
     elog_i( "prt" , "sys led tick task enter");
     while(1)
     {
-        GPIOB->ODR |= GPIO_PIN_5;
-        vTaskDelay( 200 / portTICK_PERIOD_MS );
-        GPIOB->ODR &= ~GPIO_PIN_5;
-        vTaskDelay( 200 / portTICK_PERIOD_MS );
+        led_on( BOARD_LED0 );
+        vTaskDelay( 50 / portTICK_PERIOD_MS );
+        led_off( BOARD_LED0 );
+        vTaskDelay( 950 / portTICK_PERIOD_MS );
     }
     elog_i( "prt" , "led tick task exit");
+}
+
+static void log_flush_task( void* param )
+{
+    while(1)
+    {
+        elog_flush();
+        vTaskDelay( 20 / portTICK_PERIOD_MS );
+    }
 }
 
 extern "C" int main()
@@ -47,6 +55,15 @@ extern "C" int main()
     );
 
     xTaskCreate(
+        log_flush_task , 
+        "log flush",
+        512,
+        NULL,
+        3 , 
+        NULL
+    );
+
+    xTaskCreate(
         sys_tick_led_task , 
         "sys led",
         256,
@@ -61,10 +78,3 @@ extern "C" int main()
 
     return 0;
 }
-
-extern "C" int test( void* args , ... )
-{
-    return 0;
-}
-
-REGISTER_FUNCTION(test);

@@ -67,7 +67,6 @@
         "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_3.c",
         "SDK/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_5.c",
         "USER/user_main.c",
-        "USER/test.c",
         "SDK/stm32_hal/Drivers/CMSIS/Core_A",
         "SDK/stm32_hal/Drivers/CMSIS/docs",
         "SDK/stm32_hal/Drivers/CMSIS/DSP",
@@ -83,7 +82,8 @@
         "SDK/stm32_hal/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates",
         "SDK/stm32_hal/Drivers/CMSIS/Core/Template",
         "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_conf_template.c",
-        "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c"
+        "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_desc_template.c",
+        "USER/shell"
       ],
       "toolchain": "GCC",
       "compileConfig": {
@@ -125,7 +125,6 @@
           "USER/Keyboard",
           "USER/easylogger/inc",
           "USER/KeyboardHidReport",
-          "USER/device/spi_flash",
           "USER/embed_shell",
           "USER/bsp",
           "SDK/freeRTOS/include",
@@ -137,7 +136,8 @@
           "SDK/stm32_hal/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
           "SDK/stm32_hal/USB_DEVICE/App",
           "SDK/stm32_hal/USB_DEVICE/Target",
-          "SDK/stm32_hal/Drivers/CMSIS/Device/ST/STM32F1xx/Include"
+          "SDK/stm32_hal/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
+          "USER/device"
         ],
         "libList": [
           "SDK/USB_DEVICE/App",

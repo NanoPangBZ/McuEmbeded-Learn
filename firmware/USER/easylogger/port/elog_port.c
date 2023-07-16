@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "task.h"
-#include "bsp.h"
+#include "bsp\usart\bsp_usart.h"
 
 /**
  * EasyLogger port initialize
@@ -68,7 +68,7 @@ void elog_port_deinit(void) {
  */
 void elog_port_output(const char *log, size_t size)
 {
-    usart_send( (uint8_t*)log , size );
+    usart_send_asyn( (uint8_t*)log , size );
 }
 
 /**
