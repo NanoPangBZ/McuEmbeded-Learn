@@ -2,6 +2,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 uint16_t w25qxx_get_id( void );
 uint8_t w25qxx_write_enable(void);
 uint8_t w25qxx_write_disable(void);
@@ -15,3 +19,7 @@ uint8_t w25qxx_program( uint32_t addr , uint8_t* data , uint16_t len );
 uint8_t w25qxx_read( uint32_t addr , uint8_t* buf , uint16_t len );
 
 uint8_t w25qxx_test( void );
+
+#ifdef __cplusplus
+}
+#endif

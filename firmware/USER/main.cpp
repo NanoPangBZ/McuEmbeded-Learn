@@ -10,7 +10,7 @@
 void test_task( void* param )
 {
     elog_i( "prt" , "test task enter");
-    w25qxx_test();
+    elog_i( "prt" , "%s" , ( w25qxx_test() ? "w25qxx error" : "w25qxx pass" ) );
     elog_i( "prt" , "test task exit");
     vTaskDelete( NULL );
 }
