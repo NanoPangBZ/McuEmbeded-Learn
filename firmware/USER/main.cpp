@@ -6,6 +6,9 @@
 #include "bsp.h"
 #include "device.h"
 #include <string.h>
+#include "ssd1306.h"
+
+static Ssd1306  ssd1306( &oled_spi4_handle );
 
 void test_task( void* param )
 {
@@ -44,6 +47,9 @@ extern "C" int main()
 
     elog_i( "system" , "hardware set up!" );
     elog_flush();
+
+    ssd1306.drawLine( 0 , 0 , 127 , 63 );
+    ssd1306.refresh();
 
     xTaskCreate(
         test_task , 

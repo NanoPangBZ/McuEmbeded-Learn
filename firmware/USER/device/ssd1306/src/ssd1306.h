@@ -19,7 +19,7 @@ public:
 private:
     void setPosition(uint8_t page,uint8_t x);
     Ssd1306_hal_handle_t   _hal_t;
-    bool                   _isSelfBuf;
+    uint8_t                 _buf[1024];
 };
 
 #endif //_ssd1306_h

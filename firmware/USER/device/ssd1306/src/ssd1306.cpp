@@ -1,25 +1,20 @@
 #include "ssd1306.h"
 #include "string.h"
 #include "font_lib.h"
-// #include "esp_log.h"
 
 #define TAG "ssd1306"
 
 Ssd1306::Ssd1306(Ssd1306_hal_handle_t *hal_t){
     _hal_t = *hal_t;
-    _isSelfBuf = false;
-    if(!_hal_t.buf){
-        _hal_t.buf = new unsigned char[1024];
-        _isSelfBuf = true;
-    }
+    // _isSelfBuf = false;
     _hal_t.init(_hal_t.ctx);
     softInit();
 }
 
 Ssd1306::~Ssd1306(){
-    if(_isSelfBuf){
-        delete []_hal_t.buf;
-    }
+    // if(_isSelfBuf){
+    //     delete []_buf;
+    // }
 }
 
 void Ssd1306::softInit(){
@@ -31,22 +26,21 @@ void Ssd1306::softInit(){
     0x14,0xa4,0xa6,0xaf
     };
     _hal_t.sendCmd(initCmd,28,_hal_t.ctx);
-    memset(_hal_t.buf,0x00,1024);
+    memset(_buf,0x00,1024);
     refresh();
-    //OLED12864_Send_NumByte(OLED12864_InitCmd,28,OLED_CMD);
 }
 
 void Ssd1306::refresh(){
     setPosition(0,0);
-    _hal_t.sendDat(_hal_t.buf,1024,_hal_t.ctx);
+    _hal_t.sendDat(_buf,1024,_hal_t.ctx);
 }
 
 void Ssd1306::clear(){
-    memset(_hal_t.buf,0x00,1024);
+    memset(_buf,0x00,1024);
 }
 
 void Ssd1306::clearPage(uint8_t page,uint8_t x,uint8_t len){
-    uint8_t *offsetAddr = _hal_t.buf + page *128 + x;
+    uint8_t *offsetAddr = _buf + page *128 + x;
     memset(offsetAddr,0x00,len);
 }
 
@@ -56,9 +50,9 @@ void Ssd1306::drawPoint(uint8_t x,uint8_t y,uint8_t pix){
     uint8_t page = y/8;
     uint8_t offset = y%8;
     if(pix){
-        _hal_t.buf[page*128+x] |= (0x01<<offset);
+        _buf[page*128+x] |= (0x01<<offset);
     }else{
-        _hal_t.buf[page*128+x] &= ~(0x01<<offset);
+        _buf[page*128+x] &= ~(0x01<<offset);
     }
 }
 
@@ -96,7 +90,7 @@ void Ssd1306::drawLine(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2){
 
 //仅支持ASSIC字符
 void Ssd1306::displayChar(uint8_t x,uint8_t y,char chr,uint8_t size){
-    unsigned char *offsetAddr = _hal_t.buf + ( (y/8) * 128 ) + x;
+    unsigned char *offsetAddr = _buf + ( (y/8) * 128 ) + x;
     uint8_t pageOffset = y%8;
     uint8_t pageUpOffset = 8 - pageOffset;
     switch (size)
@@ -156,7 +150,4 @@ void Ssd1306::setPosition(uint8_t page,uint8_t x){
     dat[1] = ((0xf0&x)>>4)|0x10;    //x坐标高四位设定
     dat[2] = 0x0f&x;                //x坐标低四位设定
     _hal_t.sendCmd(dat,3,_hal_t.ctx);
-    //OLED12864_Send_NumByte(dat,3,OLED_CMD);
 }
-
-//ssd1306

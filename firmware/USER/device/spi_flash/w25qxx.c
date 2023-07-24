@@ -159,6 +159,12 @@ uint8_t w25qxx_program_page( uint32_t addr , uint8_t* data , uint16_t len )
 
 uint8_t w25qxx_program( uint32_t addr , uint8_t* data , uint16_t len )
 {
+    uint32_t end_addr = addr + len;
+    while( addr != end_addr )
+    {
+        
+    }
+
     return 0;
 }
 

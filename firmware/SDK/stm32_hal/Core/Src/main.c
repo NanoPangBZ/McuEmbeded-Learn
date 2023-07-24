@@ -64,7 +64,7 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
-int sdk_main(void)
+int hal_init(void)
 {
   /* USER CODE BEGIN 1 */
 
@@ -93,8 +93,7 @@ int sdk_main(void)
   MX_USB_DEVICE_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-  extern int main();
-  main();
+  return 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */

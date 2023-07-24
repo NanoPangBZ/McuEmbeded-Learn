@@ -2,14 +2,24 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define x_MAX           128
-#define y_MAX           64
-#define page_MAX        8
+#include "gpio.h"
+#include "spi.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+#define TAG             "ssd1306"
+#define ERR_LOG(...)
+#define INFO_LOG(...)
 
 #define OLED_CMD    0
 #define OLED_DATA   1
 
-#define TAG "ssd1306_spi4_hal"
+#define CS_LOW()
+#define CS_HIGH()
+#define DC_LOW()
+#define DC_HIGH()
+#define RES_LOW()
+#define RES_HIGH()
 
 //函数声明
 void Init(void*);
@@ -17,100 +27,50 @@ void Deint(void*);
 void sendCmd(uint8_t*cmd,uint8_t len,void*);
 void sendDat(uint8_t*dat,uint16_t len,void*);
 
+//静态内存
+static uint8_t buf[1024];
+
 Ssd1306_hal_handle_t oled_spi4_handle = {
-    .buf = NULL,
+    .buf = buf,
     .ctx = NULL,
     .deinit = Deint,
     .init = Init,
     .sendCmd = sendCmd,
-    .sendDat = sendDat,
+    .sendDat = sendDat
 };
 
-void OLED12864_Set_Bit(int pin_Num){
-    // gpio_set_level((gpio_num_t)pin_Num,1);
-}
-
-void OLED12864_Reset_Bit(int pin_Num){
-    // gpio_set_level((gpio_num_t)pin_Num,0);
-}
-
-void OLED12864_GPIO_Init(void)
+static void ssd1306_spi_send(const uint8_t*dat,uint16_t len,uint8_t cmd)
 {
-    // gpio_set_direction((gpio_num_t)OLED_DC,GPIO_MODE_OUTPUT);
-    // gpio_set_direction((gpio_num_t)OLED_RES,GPIO_MODE_OUTPUT);
-    // OLED12864_Reset_Bit(OLED_DC);
-    // OLED12864_Set_Bit(OLED_RES);
+    CS_LOW();
+    
+    CS_HIGH();
 }
 
-// void OLED12864_SPI_Start_CallBack(spi_transaction_t *para){
-    // if( (int)para->user == OLED_CMD){
-    //     gpio_set_level((gpio_num_t)OLED_DC,0);
-    // }else{
-    //     gpio_set_level((gpio_num_t)OLED_DC,1);
-    // }
-// }
-
-void OLED12864_SPI_Init(void)
-{
-    // spi_bus_config_t buscfg={
-    //     .miso_io_num = -1,
-    //     .mosi_io_num = OLED_MOSI,
-    //     .sclk_io_num = OLED_SCL,
-    //     .quadwp_io_num = -1,
-    //     .quadhd_io_num = -1,
-    //     .max_transfer_sz = 4092,
-    // };
-    // spi_device_interface_config_t device_interface ={
-    //     .clock_speed_hz = SPI_MASTER_FREQ_20M,
-    //     .queue_size = 3,
-    //     .mode = 3,
-    //     .spics_io_num = OLED_CS,
-    //     .pre_cb = OLED12864_SPI_Start_CallBack,
-    //     .flags = SPI_DEVICE_HALFDUPLEX,
-    // };
-    // spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
-    // spi_bus_add_device(SPI2_HOST,&device_interface,&spi_handle);
-
-}
-
-void OLED12864_Send_NumByte(const uint8_t*dat,uint16_t len,uint8_t cmd)
-{
-    // static spi_transaction_t tran;
-    // tran.tx_buffer = dat;
-    // tran.length = len*8;
-    // tran.flags = SPI_TRANS_MODE_OCT;
-    // if(cmd==OLED_CMD){
-    //     tran.user = (void*)OLED_CMD;
-    // }else{
-    //     tran.user = (void*)OLED_DATA;
-    // }
-    // spi_device_queue_trans(spi_handle,&tran, portMAX_DELAY );
-}
-
-void OLED12864_delay_ms(uint16_t ms){
-    // vTaskDelay( 20 );
+static void ssd1306_delay(uint16_t ms){
+    if( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+    {
+        vTaskDelay( ms / portTICK_PERIOD_MS );
+    }else{
+        HAL_Delay(ms);
+    }
 }
 
 void Init(void*ctx){
-    // OLED12864_GPIO_Init();
-    // OLED12864_SPI_Init();
-    // OLED12864_Reset_Bit(OLED_RES);
-    // OLED12864_delay_ms(300);
-    // OLED12864_Set_Bit(OLED_RES);
-    //ESP_LOGW(TAG,"Init");
+    CS_HIGH();
+    RES_LOW();
+    ssd1306_delay(300);
+    RES_HIGH();
 }
 
 void Deint(void*ctx){
-
+    (void)ctx;
 }
 
 void sendCmd(uint8_t* cmd,uint8_t len,void* ctx){
-    OLED12864_Send_NumByte(cmd,len,OLED_CMD);
-    //ESP_LOGW(TAG,"CmdSend");
+    ssd1306_spi_send(cmd,len,OLED_CMD);
 }
 
 void sendDat(uint8_t* dat,uint16_t len,void* ctx){
-    OLED12864_Send_NumByte(dat,len,OLED_DATA);
-    //ESP_LOGW(TAG,"DatSend");
+    ssd1306_spi_send(dat,len,OLED_DATA);
 }
 

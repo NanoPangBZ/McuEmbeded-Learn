@@ -96,10 +96,11 @@ LoopFillZerobss:
   cmp r2, r4
   bcc FillZerobss
 
+  bl hal_init
 /* Call static constructors */
     bl __libc_init_array
 /* Call the application's entry point.*/
-  bl sdk_main
+  bl main
   bx lr
 .size Reset_Handler, .-Reset_Handler
 
