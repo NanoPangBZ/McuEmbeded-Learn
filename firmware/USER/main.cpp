@@ -23,6 +23,7 @@ static void sys_tick_led_task( void* param )
     elog_i( "prt" , "sys led tick task enter");
     while(1)
     {
+        elog_i( "sys" , "tick");
         led_on( BOARD_LED0 );
         vTaskDelay( 50 / portTICK_PERIOD_MS );
         led_off( BOARD_LED0 );
@@ -37,6 +38,21 @@ static void log_flush_task( void* param )
     {
         elog_flush();
         vTaskDelay( 20 / portTICK_PERIOD_MS );
+    }
+}
+
+static void usart_recieve_handler( void* param )
+{
+    usart_rx_interrupt_enable();
+    while(1)
+    {
+        uint16_t cnt = usart_get_rx_len();
+        if( cnt != 0 )
+        {
+            usart_send_asyn( usart_get_rx_buf() , cnt );
+            usart_push_rx_buf( cnt );
+        }
+        vTaskDelay( 50 / portTICK_PERIOD_MS );
     }
 }
 
@@ -75,6 +91,15 @@ extern "C" int main()
         256,
         NULL,
         1 , 
+        NULL
+    );
+
+    xTaskCreate(
+        usart_recieve_handler , 
+        "usart rx",
+        256,
+        NULL,
+        7 , 
         NULL
     );
 
